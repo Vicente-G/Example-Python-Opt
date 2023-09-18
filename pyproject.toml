@@ -1,0 +1,79 @@
+[tool.pdm]
+
+[project]
+name = "example-python-opt"
+version = "1.0.0"
+description = ""
+authors = [
+    { name = "Vicente-G" },
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+dependencies = [
+    "flask>=2.3.3",
+    "python-dotenv>=1.0.0",
+    "gunicorn>=21.2.0",
+]
+requires-python = ">=3.9"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest",
+    "black",
+    "ruff",
+    "mypy",
+]
+
+[tool.pdm.scripts]
+start = "gunicorn --bind :$PORT src:app"
+type = "mypy ./src"
+dev = "python src/__init__.py --debug"
+lint = "ruff --fix ./src ./test"
+format = "black ./src ./test"
+check = { composite = [
+    "mypy ./src",
+    "ruff ./src ./test",
+    "black --check ./src ./test",
+] }
+test = "pytest -v ./test"
+
+[tool.black]
+line-length = 80
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
+warn_unreachable = true
+pretty = true
+show_traceback = true
+
+[tool.ruff]
+extend-select = [
+    "B",
+    "BLE",
+    "C4",
+    "ERA",
+    "I",
+    "ICN",
+    "ISC",
+    "N",
+    "NPY",
+    "PGH",
+    "PIE",
+    "Q",
+    "RET",
+    "RSE",
+    "RUF",
+    "S",
+    "SIM",
+    "T20",
+    "TCH",
+    "TID",
+    "YTT",
+]
+ignore = ["E402", "B905", "N818", "S101", "S104"]
+show-fixes = true
+
+[build-system]
+requires = ["hatchling>=1.17.1", "hatch-vcs>=0.3.0"]
+build-backend = "hatchling.build"

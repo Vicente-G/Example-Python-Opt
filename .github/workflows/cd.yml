@@ -1,0 +1,16 @@
+name: CD Build
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: pdm-project/setup-pdm@v3
+      with:
+        python-version: 3.8
+        cache: true
+    - run: pdm sync
+    - run: pdm build
+  # Add steps if required
