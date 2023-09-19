@@ -46,16 +46,29 @@ If everything is working as intended, the answer to that response should be a 20
 
 ## Requests
 
-As this is just an example, this service only has one extra route asides from the `status` one. This service provides the route `example`, with the following command:
+As this is just an example, this service only has one extra route asides from the `status` one. This service provides the route `start`, which requires a `.dat` file being sent with the POST request. Using Axios the request can be succeed like this:
 
-```sh
-curl localhost:8080/example
+```js
+import fs from 'fs';
+import axios from 'axios';
+import FormData from 'form-data';
+
+const form = new FormData();
+const url = 'http://localhost:8080/start';
+form.append('data', fs.createReadStream('filename.dat'));
+const res = await axios.post(url, form, { headers: form.getHeaders() });
 ```
 
-The output should be something with this shape:
+The `data` property of the `res` constant would have the following shape, in which the `result` property would contain the variables that solve the model optimally in case it was optimal:
 
 ```json
 {
-    "hello": "world"
+    "status": string,
+    "condition": string,
+    "result": {
+      "objective": float,
+      "time": float,
+      ...
+    }
 }
 ```
