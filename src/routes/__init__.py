@@ -1,15 +1,15 @@
-from flask import Flask, Response
+from flask import Flask, Response, request
 
-from .example import response as example_response
+from .start import response as start_response
 
 
 def router(app: Flask) -> Flask:
     @app.route("/status", methods=["GET"])
-    def status() -> Response:
-        return Response(None, status=200)
+    def status() -> tuple[Response, int]:
+        return Response(None), 200
 
-    @app.route("/example", methods=["GET"])
-    def example() -> Response:
-        return example_response()
+    @app.route("/start", methods=["POST"])
+    def start() -> tuple[Response, int]:
+        return start_response(request)
 
     return app
